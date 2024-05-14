@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   metadata:
     Name: Animator Snowman
-    Type: Sparks.Entities.Creatures.Creature
+    Type: Sparks.Entities.Entity
   keyValuePairs: []
   prefab: {fileID: 3818827723544886564, guid: 2deb669d7c8c94760a0f32ecd590ea33, type: 3}
   supplementalFiles: []
@@ -25,4 +25,4 @@ MonoBehaviour:
   _useGrabPoint: 0
   _useDifferentHands: 0
   _metadataSerialized: '{"Guid":"2deb669d-7c8c-9476-0a0f-32ecd590ea33","Name":"Animator
-    Snowman","Type":"Sparks.Entities.Creatures.Creature","KeyVals":{}}'
+    Snowman","Type":"Sparks.Entities.Entity","KeyVals":{}}'

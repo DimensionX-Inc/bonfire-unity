@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   metadata:
     Name: Animation Dinosaur
-    Type: Sparks.Entities.Creatures.Creature
+    Type: Sparks.Entities.Entity
   keyValuePairs: []
   prefab: {fileID: 5640575457006119687, guid: 2e7b34e301892bf488bcadff34b7b11e, type: 3}
   supplementalFiles: []
@@ -25,4 +25,4 @@ MonoBehaviour:
   _useGrabPoint: 0
   _useDifferentHands: 0
   _metadataSerialized: '{"Guid":"2e7b34e3-0189-2bf4-88bc-adff34b7b11e","Name":"Animation
-    Dinosaur","Type":"Sparks.Entities.Creatures.Creature","KeyVals":{}}'
+    Dinosaur","Type":"Sparks.Entities.Entity","KeyVals":{}}'
