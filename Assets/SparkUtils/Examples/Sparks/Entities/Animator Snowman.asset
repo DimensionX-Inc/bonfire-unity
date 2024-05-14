@@ -15,6 +15,7 @@ MonoBehaviour:
   metadata:
     Name: Animator Snowman
     Type: Sparks.Entities.Creatures.Creature
+  keyValuePairs: []
   prefab: {fileID: 3818827723544886564, guid: 2deb669d7c8c94760a0f32ecd590ea33, type: 3}
   supplementalFiles: []
   buildAssetBundles: 0

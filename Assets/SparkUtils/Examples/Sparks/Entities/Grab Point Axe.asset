@@ -15,6 +15,7 @@ MonoBehaviour:
   metadata:
     Name: Grab Point Axe
     Type: Sparks.Entities.Entity
+  keyValuePairs: []
   prefab: {fileID: 6921882288780191417, guid: 862a6212a52b249acb6534720997036c, type: 3}
   supplementalFiles: []
   buildAssetBundles: 0
@@ -24,5 +25,4 @@ MonoBehaviour:
   _useGrabPoint: 1
   _useDifferentHands: 1
   _metadataSerialized: '{"Guid":"862a6212-a52b-249a-cb65-34720997036c","Name":"Grab
-    Point Axe","Type":"Sparks.Entities.Entity","KeyVals":{"GrabPointLeft":"Grab Point
-    Axe/GrabPointL","GrabPointRight":"Grab Point Axe/GrabPointR"}}'
+    Point Axe","Type":"Sparks.Entities.Entity","KeyVals":{}}'

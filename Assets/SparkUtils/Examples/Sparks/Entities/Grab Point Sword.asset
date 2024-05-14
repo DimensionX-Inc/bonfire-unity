@@ -15,6 +15,7 @@ MonoBehaviour:
   metadata:
     Name: Grab Point Sword
     Type: Sparks.Entities.Entity
+  keyValuePairs: []
   prefab: {fileID: 5770751153764049248, guid: be8cb61e2f34542d483ca7d60bfa9603, type: 3}
   supplementalFiles: []
   buildAssetBundles: 0
@@ -24,5 +25,4 @@ MonoBehaviour:
   _useGrabPoint: 1
   _useDifferentHands: 0
   _metadataSerialized: '{"Guid":"be8cb61e-2f34-542d-483c-a7d60bfa9603","Name":"Grab
-    Point Sword","Type":"Sparks.Entities.Entity","KeyVals":{"GrabPoint":"Grab Point
-    Sword/GrabPoint"}}'
+    Point Sword","Type":"Sparks.Entities.Entity","KeyVals":{}}'

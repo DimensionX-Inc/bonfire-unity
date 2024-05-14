@@ -15,6 +15,7 @@ MonoBehaviour:
   metadata:
     Name: Animation Dinosaur
     Type: Sparks.Entities.Creatures.Creature
+  keyValuePairs: []
   prefab: {fileID: 5640575457006119687, guid: 2e7b34e301892bf488bcadff34b7b11e, type: 3}
   supplementalFiles: []
   buildAssetBundles: 0
