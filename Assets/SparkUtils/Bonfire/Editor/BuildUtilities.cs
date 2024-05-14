@@ -132,9 +132,24 @@ namespace DimX.SparkUtils
         /// <summary>
         /// Write metadata to file system with Key Value Pairs intact
         /// </summary>
-        public static void BuildMetadata(Metadata metadata, List<StringTuple> keyValuePairs, string path)
+        public static void BuildMetadata(Metadata metadata, SparkConfigData configData, string path)
         {
-            metadata.KeyVals = keyValuePairs.ToDictionary(x => x.Key, x => x.Value);
+            metadata.KeyVals = configData.keyValuePairs.ToDictionary(x => x.Key, x => x.Value);
+            if (configData._useGrabPoint)
+            {
+                if (configData._useDifferentHands)
+                {
+                    StringTuple primary = configData._grabPointPrimary;
+                    metadata.KeyVals[primary.Key] = primary.Value;
+                    StringTuple secondary = configData._grabPointSecondary;
+                    metadata.KeyVals[secondary.Key] = secondary.Value;
+                }
+                else
+                {
+                    StringTuple primary = configData._grabPointPrimary;
+                    metadata.KeyVals[primary.Key] = primary.Value;
+                }
+            }
             var text = JsonConvert.SerializeObject(metadata, Formatting.Indented);
             File.WriteAllText(Path.Combine(path, "Metadata.txt"), text);
         }
@@ -408,7 +423,7 @@ namespace DimX.SparkUtils
             BuildDLL(path, configData.metadata, doDebug);
 
             // Generate Metadata
-            BuildMetadata(configData.metadata, configData.keyValuePairs, path);
+            BuildMetadata(configData.metadata, configData, path);
 
             // Generate Preview
             GeneratePreview(configData, path, editor);

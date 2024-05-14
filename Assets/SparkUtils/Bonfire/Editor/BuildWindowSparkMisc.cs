@@ -1,4 +1,5 @@
 using DimX.Common.Assets.Types.Common;
+using DimX.Common.Utilities;
 using DimX.SparkUtils.SO;
 using UnityEditor;
 using UnityEngine;
@@ -30,56 +31,70 @@ namespace DimX.SparkUtils
             if (configData._useDifferentHands)
             {
                 _grabPoint = default;
-                AddGrabPointField(ref _grabPointL, "Grab Point Left", go, configData.metadata);
-                AddGrabPointField(ref _grabPointR, "Grab Point Right", go, configData.metadata);
+                AddGPField(ref _grabPointL, ref configData._grabPointPrimary, "Grab Point Left", go, configData.metadata);
+                AddGPField(ref _grabPointR, ref configData._grabPointSecondary, "Grab Point Right", go, configData.metadata);
             }
             else
             {
                 _grabPointL = default;
                 _grabPointR = default;
-                AddGrabPointField(ref _grabPoint, "Grab Point", go, configData.metadata);
+                AddGPField(ref _grabPoint, ref configData._grabPointPrimary, "Grab Point", go, configData.metadata);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private static void AddGrabPointField(ref Transform grabPoint, string label, GameObject go, Metadata metadata)
+        /// <param name="data">Used to support backwards compatibility where grab points were in metadata's key values</param>
+        private static void AddGPField(
+            ref Transform grabPointTransform, 
+            ref StringTuple grabPointPath, 
+            string label, 
+            GameObject go, 
+            Metadata data = null)
         {
-            var keyVal = label.Replace(" ", "");
+            string key = label.Replace(" ", "");
             
-            if (metadata.KeyVals.TryGetValue(keyVal, out string value))
+            //Maintain backwards compatibility
+            if((grabPointPath == default || string.IsNullOrEmpty(grabPointPath.Key))
+               &&
+               data != null && data.KeyVals.TryGetValue(key, out string metaPath))
             {
-                Transform temp = go.transform.Find(value.Replace($"{go.name}/", string.Empty));
-                grabPoint = temp == null ? grabPoint : temp;
+                grabPointPath = new StringTuple(key, metaPath);
             }
             
-            grabPoint = EditorGUILayout.ObjectField(new GUIContent(label), grabPoint, typeof(Transform), true) as Transform;
-            
-            CheckAndAddGrabPointToMetadata(ref grabPoint, keyVal, go, metadata);
-            if (metadata.KeyVals.TryGetValue(keyVal, out var path)) EditorGUILayout.LabelField(path);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private static void CheckAndAddGrabPointToMetadata(ref Transform grabPoint, string keyVal, GameObject go, Metadata metadata)
-        {
-            if (grabPoint != default)
+            //check if value is already set
+            if (grabPointPath != default)
             {
-                if (!EnsureObjectIsChild(grabPoint, go.transform, out var pathToChild))
+                Transform temp = go.transform.Find(grabPointPath.Value.Replace($"{go.name}/", string.Empty));
+                grabPointTransform = temp == null ? grabPointTransform : temp;
+            }
+
+            //create object field tied to that value
+            grabPointTransform =
+                EditorGUILayout.ObjectField(label, grabPointTransform, typeof(Transform),
+                    true) as Transform;
+            
+            //set value in configData
+            if (grabPointTransform != default)
+            {
+                if (!EnsureObjectIsChild(grabPointTransform, go.transform, out var pathToChild))
                 {
                     Debug.LogError("Grab point must be a child transform within the prefab");
-                    grabPoint = null;
+                    grabPointTransform = null;
+                    grabPointPath = default;
                 }
                 else
                 {
-                    metadata.KeyVals[keyVal] = pathToChild;
+                    grabPointPath = new StringTuple(key, pathToChild);
                 }
             }
             else
             {
-                metadata.KeyVals.Remove(keyVal);
+                grabPointPath = default;
+            }
+
+            //set label if valid
+            if (grabPointPath != default)
+            {
+                EditorGUILayout.LabelField(grabPointPath.Value);
             }
         }
 

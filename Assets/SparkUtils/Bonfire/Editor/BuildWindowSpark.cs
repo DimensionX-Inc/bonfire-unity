@@ -89,6 +89,8 @@ namespace DimX.SparkUtils
 
         #region Unity
 
+        private Vector2 _scrollPosition = Vector2.zero;
+        
         /// <summary>
         /// Draw the export window.
         /// </summary>
@@ -96,6 +98,8 @@ namespace DimX.SparkUtils
         {
             _sparkConfigSerializedObject ??= new SerializedObject(_configData);
 
+            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+            
             SparkWindowFields.CreateSource(_configData);
             SparkWindowFields.CreateMetadata(_configData);
             SparkWindowFields.CreateSupplemental(_configData);
@@ -103,6 +107,8 @@ namespace DimX.SparkUtils
             SparkWindowFields.CreateGrabPoints(_configData);
             SparkWindowFields.CreatePreview(_configData, _editor);
 
+            EditorGUILayout.EndScrollView();
+            
             //////////////////////////////////////////////////
 
             GUILayout.Space(15);

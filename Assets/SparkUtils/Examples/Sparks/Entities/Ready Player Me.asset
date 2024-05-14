@@ -15,7 +15,6 @@ MonoBehaviour:
   metadata:
     Name: Ready Player Me
     Type: Sparks.Entities.Creatures.ReadyPlayerMe
-  keyValuePairs: []
   prefab: {fileID: 5794013811300297213, guid: cac1532c95e85485193c3d425921f4ab, type: 3}
   supplementalFiles: []
   buildAssetBundles: 0

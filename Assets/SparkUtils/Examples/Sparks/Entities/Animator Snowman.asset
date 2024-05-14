@@ -24,5 +24,11 @@ MonoBehaviour:
   _editor: {fileID: 0}
   _useGrabPoint: 0
   _useDifferentHands: 0
+  _grabPointPrimary:
+    Key: 
+    Value: 
+  _grabPointSecondary:
+    Key: 
+    Value: 
   _metadataSerialized: '{"Guid":"2deb669d-7c8c-9476-0a0f-32ecd590ea33","Name":"Animator
     Snowman","Type":"Sparks.Entities.Entity","KeyVals":{}}'

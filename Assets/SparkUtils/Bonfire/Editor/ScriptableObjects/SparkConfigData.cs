@@ -24,6 +24,8 @@ namespace DimX.SparkUtils.SO
         // Grab Point(s)
         public bool _useGrabPoint;
         public bool _useDifferentHands;
+        public StringTuple _grabPointPrimary;
+        public StringTuple _grabPointSecondary;
 
         [SerializeField] private string _metadataSerialized;
 

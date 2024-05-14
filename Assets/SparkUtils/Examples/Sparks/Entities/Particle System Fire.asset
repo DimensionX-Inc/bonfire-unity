@@ -24,5 +24,11 @@ MonoBehaviour:
   _editor: {fileID: 0}
   _useGrabPoint: 0
   _useDifferentHands: 0
+  _grabPointPrimary:
+    Key: 
+    Value: 
+  _grabPointSecondary:
+    Key: 
+    Value: 
   _metadataSerialized: '{"Guid":"7e2b13e8-8684-8492-6990-f42183e25e3b","Name":"Particle
     System Fire","Type":"Sparks.Entities.Entity","KeyVals":{}}'

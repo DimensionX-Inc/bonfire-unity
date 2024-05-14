@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   metadata:
     Name: Hinged Lever
-    Type: Sparks.Entities.Hinged
+    Type: Sparks.Spark
   keyValuePairs: []
   prefab: {fileID: 4983106571921730681, guid: b69764edf892c194fb624d9e0fd7c999, type: 3}
   supplementalFiles: []
@@ -24,5 +24,11 @@ MonoBehaviour:
   _editor: {fileID: 0}
   _useGrabPoint: 0
   _useDifferentHands: 0
+  _grabPointPrimary:
+    Key: 
+    Value: 
+  _grabPointSecondary:
+    Key: 
+    Value: 
   _metadataSerialized: '{"Guid":"b69764ed-f892-c194-fb62-4d9e0fd7c999","Name":"Hinged
-    Lever","Type":"Sparks.Entities.Hinged","KeyVals":{}}'
+    Lever","Type":"Sparks.Spark","KeyVals":{}}'
