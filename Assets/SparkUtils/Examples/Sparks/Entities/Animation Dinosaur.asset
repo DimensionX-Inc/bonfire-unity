@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61514c7e6d50440bbb6798822f4f53f, type: 3}
+  m_Name: Animation Dinosaur
+  m_EditorClassIdentifier: 
+  metadata:
+    Name: Animation Dinosaur
+    Type: Sparks.Entities.Creatures.Creature
+  prefab: {fileID: 5640575457006119687, guid: 2e7b34e301892bf488bcadff34b7b11e, type: 3}
+  supplementalFiles: []
+  buildAssetBundles: 0
+  buildTargets: 
+  previewPath: 
+  _editor: {fileID: 0}
+  _useGrabPoint: 0
+  _useDifferentHands: 0
+  _metadataSerialized: '{"Guid":"2e7b34e3-0189-2bf4-88bc-adff34b7b11e","Name":"Animation
+    Dinosaur","Type":"Sparks.Entities.Creatures.Creature","KeyVals":{}}'

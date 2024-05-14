@@ -1,0 +1,132 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5640575457006119687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5039913815753438094}
+  m_Layer: 0
+  m_Name: Animation Dinosaur
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5039913815753438094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5640575457006119687}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 5489757228600993431}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3987755205484957273
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5039913815753438094}
+    m_Modifications:
+    - target: {fileID: -6371735407705743472, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_DirtyAABB
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6371735407705743472, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0.00074005127
+      objectReference: {fileID: 0}
+    - target: {fileID: -6371735407705743472, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 286.8011
+      objectReference: {fileID: 0}
+    - target: {fileID: -6371735407705743472, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: -43.479156
+      objectReference: {fileID: 0}
+    - target: {fileID: -6371735407705743472, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 166.89621
+      objectReference: {fileID: 0}
+    - target: {fileID: -6371735407705743472, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 296.29712
+      objectReference: {fileID: 0}
+    - target: {fileID: -6371735407705743472, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 617.4227
+      objectReference: {fileID: 0}
+    - target: {fileID: -6371735407705743472, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4b118182d38e9424d96ee4c2e67ae717, type: 2}
+    - target: {fileID: -5644133064174452605, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6b6b235f93fde4cd49b3e2f502cf7b8b, type: 2}
+    - target: {fileID: 8128668236925612103, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_Name
+      value: Dinosaur
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -5645937942226959685, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+--- !u!4 &5489757228600993431 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: d88118b07079f489a8f921d0b7c05cc0, type: 3}
+  m_PrefabInstance: {fileID: 3987755205484957273}
+  m_PrefabAsset: {fileID: 0}

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61514c7e6d50440bbb6798822f4f53f, type: 3}
+  m_Name: Ready Player Me
+  m_EditorClassIdentifier: 
+  metadata:
+    Name: Ready Player Me
+    Type: Sparks.Entities.Creatures.ReadyPlayerMe
+  prefab: {fileID: 5794013811300297213, guid: cac1532c95e85485193c3d425921f4ab, type: 3}
+  supplementalFiles: []
+  buildAssetBundles: 0
+  buildTargets: 
+  previewPath: 
+  _editor: {fileID: 0}
+  _useGrabPoint: 0
+  _useDifferentHands: 0
+  _metadataSerialized: '{"Guid":"cac1532c-95e8-5485-193c-3d425921f4ab","Name":"Ready
+    Player Me","Type":"Sparks.Entities.Creatures.ReadyPlayerMe","KeyVals":{}}'

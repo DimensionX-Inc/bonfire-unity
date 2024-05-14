@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61514c7e6d50440bbb6798822f4f53f, type: 3}
+  m_Name: Grab Point Axe
+  m_EditorClassIdentifier: 
+  metadata:
+    Name: Grab Point Axe
+    Type: Sparks.Entities.Entity
+  prefab: {fileID: 6921882288780191417, guid: 862a6212a52b249acb6534720997036c, type: 3}
+  supplementalFiles: []
+  buildAssetBundles: 0
+  buildTargets: 
+  previewPath: 
+  _editor: {fileID: 0}
+  _useGrabPoint: 1
+  _useDifferentHands: 1
+  _metadataSerialized: '{"Guid":"862a6212-a52b-249a-cb65-34720997036c","Name":"Grab
+    Point Axe","Type":"Sparks.Entities.Entity","KeyVals":{"GrabPointLeft":"Grab Point
+    Axe/GrabPointL","GrabPointRight":"Grab Point Axe/GrabPointR"}}'

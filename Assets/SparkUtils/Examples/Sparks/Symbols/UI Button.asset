@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61514c7e6d50440bbb6798822f4f53f, type: 3}
+  m_Name: UI Button
+  m_EditorClassIdentifier: 
+  metadata:
+    Name: UI Button
+    Type: Sparks.Symbols.Interactive.ButtonSymbol
+  prefab: {fileID: 1886810957481520926, guid: f6e150b5baf9b4e4fb5a89d038bedd86, type: 3}
+  supplementalFiles: []
+  previewPath: 
+  _editor: {fileID: 0}
+  _useGrabPoint: 0
+  _useDifferentHands: 0
+  _metadataSerialized: '{"Guid":"f6e150b5-baf9-b4e4-fb5a-89d038bedd86","Name":"UI
+    Button","Type":"Sparks.Symbols.Interactive.ButtonSymbol","KeyVals":{}}'
