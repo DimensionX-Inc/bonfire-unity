@@ -1,4 +1,5 @@
 using System.IO;
+using DimX.Common.Assets.Loaders;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ namespace DimX.SparkUtils
         {
             DeployAssets("Sparks");
         }
-
+        
         public static void DeploySingleMap(string sourceFilePath)
         {
             DeployAsset(sourceFilePath, "Maps");
@@ -34,14 +35,19 @@ namespace DimX.SparkUtils
         
         private static void DeployAsset(string sourceFilePath, string type)
         {
-            GetMatchingDirectories(type, out string sourceDirectory, out string destinationDirectory);
+            AssetLoader.LoadPreview(sourceFilePath, preview =>
+            {
+                GetMatchingDirectories(type, out _, out string destinationDirectory);
+
+                var sourceFile = new FileInfo(sourceFilePath);
+                string destinationFilePath =
+                    Path.Combine(destinationDirectory, $"{preview.Metadata.Guid}.{sourceFile.Extension}");
+                
+                Directory.CreateDirectory(destinationDirectory);
+                File.Copy(sourceFilePath, destinationFilePath, overwrite: true);
             
-            string destinationFilePath = sourceFilePath.Replace(sourceDirectory, destinationDirectory);
-            destinationDirectory = Path.GetDirectoryName(destinationFilePath);
-            Directory.CreateDirectory(destinationDirectory);
-            File.Copy(sourceFilePath, destinationFilePath, overwrite: true);
-            
-            DisplaySuccessMessage(type);
+                DisplaySuccessMessage(type);
+            });
         }
         
         private static void DeployAssets(string type)

@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DimX.Common.Assets.Types.Common;
 using DimX.Common.Utilities;
+using DimX.SparkUtils.SO;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEditor;
 using Object = UnityEngine.Object;
@@ -12,12 +16,16 @@ namespace DimX.SparkUtils
     {
         private Editor _editor;
         private GameObject _go;
+        private MapConfigData _mapConfig;
+        private GameObject t;
         
         private Action _callback;
         private Metadata _metadata = new();
 
         private bool _doDeploy;
         private string _outputPath;
+        
+        private static readonly Dictionary<Guid, MapConfigData> _configs = new();
 
         /// <summary>
         /// Initialize and show the export window.
@@ -29,7 +37,6 @@ namespace DimX.SparkUtils
 
             w._editor = Editor.CreateEditor(go);
             w._go = go;
-            
             w._callback = callback;
             w._metadata.Guid = GameObjectToGuid(go);
             w._metadata.Name = go.name;
@@ -37,8 +44,19 @@ namespace DimX.SparkUtils
 
             w._doDeploy = false;
             w._outputPath = Path.Combine(Constants.AssetRoot, "Maps");
+            
+            _configs.Clear();
+            BuildUtilities.FindConfigs(_configs);
+            if (BuildUtilities.TryGetAssetGuid(go, out Guid prefabGuid))
+            {
+                if (!_configs.TryGetValue(prefabGuid, out w._mapConfig))
+                {
+                    w._mapConfig = MapConfigData.CreateConfig(go);
+                    BuildUtilities.SaveConfigToDisk(w._mapConfig);
+                }
+            }
 
-            w.ShowModal();
+            w.Show();
         }
         
         #region Unity
@@ -48,7 +66,6 @@ namespace DimX.SparkUtils
         /// </summary>
         private void OnGUI()
         {
-            LogUtility.Log();
             GUILayout.Space(15);
             EditorGUILayout.LabelField("Source");
             EditorGUI.indentLevel++;
@@ -65,8 +82,13 @@ namespace DimX.SparkUtils
             {
                 _metadata.Guid = new Guid(EditorGUILayout.TextField("Guid", _metadata.Guid.ToString()));
                 _metadata.Name = EditorGUILayout.TextField("Name", _metadata.Name);
+                _mapConfig.author = EditorGUILayout.TextField("Author", _mapConfig.author);
             }
             EditorGUI.indentLevel--;
+            
+            //////////////////////////////////////////////////
+            
+            TeleportableSurfaceGUI();
             
             //////////////////////////////////////////////////
 
@@ -100,14 +122,47 @@ namespace DimX.SparkUtils
             }
         }
 
+        private void TeleportableSurfaceGUI()
+        {
+            GUILayout.Space(15);
+            Undo.RecordObject(_mapConfig, "Map Config Edits");
+            EditorGUILayout.LabelField("VR Teleport Surfaces");
+            EditorGUILayout.LabelField(" - Leave this list empty to make all surfaces in the map teleportable.");
+            for (int i = 0; i < _mapConfig.teleportSurfaces.Count; i++)
+            {
+                string childPath = _mapConfig.teleportSurfaces[i];
+                Transform item = string.IsNullOrEmpty(childPath) ? null : _go.transform.Find(childPath);
+                item = EditorGUILayout.ObjectField(
+                    new GUIContent($"{i}"),
+                    item,
+                    typeof(Transform),
+                    allowSceneObjects: true) as Transform;
+                _mapConfig.teleportSurfaces[i] = BuildUtilities.GetChildPath(item);
+            }
+            Transform newItem = EditorGUILayout.ObjectField(
+                new GUIContent("Add"),
+                null,
+                typeof(Transform),
+                allowSceneObjects: true) as Transform;
+            if (newItem)
+            {
+                _mapConfig.teleportSurfaces.Add(BuildUtilities.GetChildPath(newItem));
+            }
+            _mapConfig.teleportSurfaces.RemoveAll(string.IsNullOrEmpty);
+        }
+
         private void Build()
         {
             // Generate Output Path
             var path = GetPath(_metadata);
             Directory.CreateDirectory(path);
             
+            // Save Teleportable surfaces
+            _metadata.KeyVals.Add(nameof(MapConfigData.teleportSurfaces), JsonConvert.SerializeObject(_mapConfig.teleportSurfaces));
+            
             // Generate Metadata
             BuildUtilities.BuildMetadata(_metadata, path);
+            _metadata.KeyVals[nameof(MapConfigData.author)] = _mapConfig.author;
             
             // Generate Preview
             BuildUtilities.BuildPreview(_editor, path);
@@ -173,6 +228,7 @@ namespace DimX.SparkUtils
             // Convert to GUID (from string) to validate and ensure proper format
             return new Guid(AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj)));
         }
+        
         #endregion
     }
 }

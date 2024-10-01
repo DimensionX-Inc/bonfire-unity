@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using DimX.Common.Assets.Types.Sparks;
 using DimX.Common.Assets.Types.Sparks.Configs;
 using DimX.Common.Utilities;
@@ -44,7 +46,8 @@ namespace DimX.SparkUtils
             {
                 configData.metadata.Guid = new Guid(EditorGUILayout.TextField("Guid", configData.metadata.Guid.ToString())?.ToLower());
                 configData.metadata.Name = EditorGUILayout.TextField("Name", configData.metadata.Name);
-
+                configData.author = EditorGUILayout.TextField("Author", configData.author);
+                
                 if (typesFetched == null)
                 {
                     typesFetched = BuildUtilities.GetTypes(configData.prefab != null ? typeof(Spark) : typeof(Config));
@@ -192,31 +195,103 @@ namespace DimX.SparkUtils
                 GUILayout.Space(15);
                 EditorGUILayout.LabelField("Preview");
 
-                if (configData.prefab == null)
+                if (!string.IsNullOrEmpty(configData.previewPath))
                 {
-                    if (configData.Preview == null)
-                    {
-                        return;
-                    }
-                    
-                    // Config Sparks - Show Texture2D
                     var rect = EditorGUILayout.GetControlRect();
                     GUI.DrawTexture(new Rect(rect.x, rect.y, 256, 256), configData.Preview);
                     GUILayout.Space(256);
                 }
                 else
                 {
-                    // All other Sparks - Show 3D object preview
-                    EditorGUILayout.BeginVertical(GUI.skin.box);
-                    editor.OnInteractivePreviewGUI(GUILayoutUtility.GetRect(256, 256), GUIStyle.none);
-                    EditorGUILayout.EndVertical();
-                    GUILayout.Space(10.0f);
+                    if (configData.prefab == null)
+                    {
+                        if (configData.Preview == null)
+                        {
+                            return;
+                        }
+
+                        // Config Sparks - Show Texture2D
+                        var rect = EditorGUILayout.GetControlRect();
+                        GUI.DrawTexture(new Rect(rect.x, rect.y, 256, 256), configData.Preview);
+                        GUILayout.Space(256);
+                    }
+                    else
+                    {
+                        // All other Sparks - Show 3D object preview
+                        EditorGUILayout.BeginVertical(GUI.skin.box);
+                        editor.OnInteractivePreviewGUI(GUILayoutUtility.GetRect(256, 256), GUIStyle.none);
+                        EditorGUILayout.EndVertical();
+                        GUILayout.Space(10.0f);
+                    }
                 }
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Choose Preview", GUILayout.Width(125)))
+                {
+                    string[] paths = FileBrowser.OpenFiles(title: "Select Preview",
+                        directory: string.IsNullOrEmpty(_lastPath)
+                            ? Path.Combine(Constants.AssetRoot, "Sparks")
+                            : _lastPath,
+                        multiSelect: false,
+                        filters: new string[] { "png", "jpg", "jpeg"});
+                    if (paths.Length > 0 && paths[0] != string.Empty)
+                    {
+                        _lastPath = paths[0];
+
+                        if (cancellationTokenSource == null)
+                        {
+                            cancellationTokenSource = new CancellationTokenSource();
+                        }
+                        else
+                        {
+                            cancellationTokenSource.Cancel();
+                            cancellationTokenSource = new CancellationTokenSource();
+                        }
+                        LoadImageFromFile(configData, paths[0], cancellationTokenSource.Token)
+                            .ContinueWith(x =>
+                            {
+                                if (x.IsFaulted)
+                                {
+                                    Debug.LogException(x.Exception);
+                                }
+                            });
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(configData.previewPath) && GUILayout.Button("Clear Preview", GUILayout.Width(125)))
+                {
+                    configData.previewPath = string.Empty;
+                    configData.Preview = null;
+                }
+                EditorGUILayout.EndHorizontal();
             }
             catch
             {
                 // NO-OP
             }
+        }
+
+        private static CancellationTokenSource cancellationTokenSource;
+
+        private static async Task<Texture2D> LoadImageFromFile(SparkConfigData configData, string assetPath, CancellationToken token)
+        {
+            Texture2D texture2D = new Texture2D(1, 1, TextureFormat.RGBA32, true);
+            texture2D.wrapMode = TextureWrapMode.Clamp;
+            Texture2D image = texture2D;
+            byte[] bytes = await File.ReadAllBytesAsync(assetPath);
+            if (image.LoadImage(bytes))
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return null;
+                }
+                image.name = Path.GetFileName(assetPath);
+                configData.previewPath = assetPath;
+                configData.Preview = image;
+                return image;
+            }
+            UnityEngine.Object.Destroy((UnityEngine.Object) image);
+            return null;
         }
     }
 }

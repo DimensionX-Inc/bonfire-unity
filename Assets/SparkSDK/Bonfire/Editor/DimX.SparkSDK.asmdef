@@ -1,0 +1,20 @@
+{
+    "name": "DimX.SparkSDK",
+    "rootNamespace": "DimX.SparkSDK",
+    "references": [
+        "GUID:0627fc05108b6416d962178978d4c6cb",
+        "GUID:18d18f811ba286c49814567a3cfba688",
+        "GUID:478a2357cc57436488a56e564b08d223"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

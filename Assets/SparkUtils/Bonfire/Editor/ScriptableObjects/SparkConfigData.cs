@@ -12,6 +12,7 @@ namespace DimX.SparkUtils.SO
     public class SparkConfigData : ScriptableObject, ISerializationCallbackReceiver
     {
         public Metadata metadata;
+        public string author;
         public List<StringTuple> keyValuePairs = new();
         public GameObject prefab;
         public List<string> supplementalFiles;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using DimX.Common.Assets.Types.Common;
 using DimX.Common.Utilities;
@@ -111,22 +112,23 @@ namespace DimX.SparkUtils
             return dllLocations;
         }
 
-        private static IEnumerable<Assembly> GetReferencedAssemblies(Assembly assembly, Assembly[] allAssemblies, List<Assembly> assembliesProcessedAlready = null)
+        private static IEnumerable<Assembly> GetReferencedAssemblies(Assembly assembly, Assembly[] allAssemblies, List<Assembly> processedAssemblies = null)
         {
-            var dlls = new List<Assembly>();
+            processedAssemblies ??= new List<Assembly>();
+
             var referenceNames = assembly.GetReferencedAssemblies();
-            referenceNames = referenceNames.Where(a => 
-                (assembliesProcessedAlready == null || assembliesProcessedAlready.All(x => x.FullName != a.FullName)) &&
-                !IgnoredAssemblyRegex.Any(reg => Regex.IsMatch(a.FullName, reg))).ToArray();
+            referenceNames = referenceNames.Where(a => processedAssemblies.All(x => x.FullName != a.FullName) &&
+                                                       !IgnoredAssemblyRegex.Any(reg => Regex.IsMatch(a.FullName, reg))).ToArray();
 
             var references = allAssemblies.Where(x => referenceNames.Any(y => y.FullName == x.FullName)).Distinct();
-            foreach (Assembly reference in references)
+
+            foreach (var reference in references)
             {
-                dlls.Add(reference);
-                dlls.AddRange(GetReferencedAssemblies(reference, allAssemblies, dlls));
+                processedAssemblies.Add(reference);
+                processedAssemblies.AddRange(GetReferencedAssemblies(reference, allAssemblies, processedAssemblies));
             }
-        
-            return dlls.Distinct();
+
+            return processedAssemblies.Distinct();
         }
 
         /// <summary>
@@ -135,6 +137,7 @@ namespace DimX.SparkUtils
         public static void BuildMetadata(Metadata metadata, SparkConfigData configData, string path)
         {
             metadata.KeyVals = configData.keyValuePairs.ToDictionary(x => x.Key, x => x.Value);
+            metadata.KeyVals[nameof(SparkConfigData.author)] = configData.author;
             if (configData._useGrabPoint)
             {
                 if (configData._useDifferentHands)
@@ -199,6 +202,7 @@ namespace DimX.SparkUtils
         
         public static void GeneratePreview(Editor editor, SparkConfigData configData)
         {
+            if (!string.IsNullOrEmpty(configData.previewPath)) return;
              configData.Preview = BuildPreview(editor);
         }
         /// <summary>
@@ -405,7 +409,7 @@ namespace DimX.SparkUtils
         public static void BuildSpark(bool doDebug, bool doDeploy, string outputPath, SparkConfigData configData, Editor editor)
         {
             // Generate Output Path
-            var path = Path.Combine(outputPath, configData.metadata.Guid.ToString());
+            var path = Path.Combine(outputPath, configData.metadata.Name);
                 
             // Delete Directory with supplemental assets
             if (Directory.Exists(path))
@@ -491,6 +495,64 @@ namespace DimX.SparkUtils
 
             byte[] rawData = File.ReadAllBytes(Path.Combine(path, "Preview.png"));
             configData.Preview.LoadImage(rawData);
+        }
+
+        public static string GetChildPath(Transform child)
+        {
+            if (!child) return "";
+            if (!child.parent) return "";
+            StringBuilder sb = new();
+            Transform current = child.parent;
+            sb.Append(child.name);
+            while (current.parent)
+            {
+                sb.Insert(0, '/');
+                sb.Insert(0, current.name);
+                current = current.parent;
+            }
+            return sb.ToString();
+        }
+        
+        public static void FindConfigs<T>(Dictionary<Guid, T> output) where T : UnityEngine.Object, IConfig
+        {
+            string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
+            foreach (string guidString in guids)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guidString);
+                T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                if (!TryGetAssetGuid(asset.Prefab, out Guid prefabGuid)) continue;
+                output.Add(prefabGuid, asset);
+            }
+        }
+
+        public static bool TryGetAssetGuid(UnityEngine.Object asset, out Guid guid)
+        {
+            if (!asset)
+            {
+                guid = Guid.Empty;
+                return false;
+            }
+            string assetPath = AssetDatabase.GetAssetPath(asset);
+            string guidString = AssetDatabase.AssetPathToGUID(assetPath);
+            return Guid.TryParse(guidString, out guid);
+        }
+
+        public static void SaveConfigToDisk<T>(T asset, bool overwrite = true) where T : ScriptableObject, IConfig
+        {
+            string prefabPath = AssetDatabase.GetAssetPath(asset.Prefab);
+            string folder = Path.GetDirectoryName(prefabPath);
+            string path = Path.Combine(folder, asset.Prefab.name + "_Config.asset");
+            SaveAssetToDisk(asset, path, overwrite);
+        }
+
+        public static void SaveAssetToDisk<T>(T asset, string path, bool overwrite = true) where T : UnityEngine.Object
+        {
+            if (!overwrite && AssetDatabase.LoadAssetAtPath<T>(path))
+            {
+                return;
+            }
+            path = AssetDatabase.GenerateUniqueAssetPath(path);
+            AssetDatabase.CreateAsset(asset, path);
         }
     }
 }
