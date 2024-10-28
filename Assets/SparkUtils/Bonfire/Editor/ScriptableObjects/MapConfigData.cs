@@ -12,6 +12,7 @@ namespace DimX.SparkUtils.SO
         [SerializeField] private GameObject prefab;
         [SerializeField] private string guid;
         public List<string> teleportSurfaces = new();
+        public List<string> nonCollidable = new();
         public string author;
         
         public Guid Guid
@@ -44,6 +45,14 @@ namespace DimX.SparkUtils.SO
                 if (!prefab.transform.Find(teleportSurfaces[i]))
                 {
                     teleportSurfaces.RemoveAt(i);
+                }
+            }
+
+            for (int i = nonCollidable.Count - 1; i >= 0; i--)
+            {
+                if (!prefab.transform.Find(nonCollidable[i]))
+                {
+                    nonCollidable.RemoveAt(i);
                 }
             }
         }

@@ -89,6 +89,7 @@ namespace DimX.SparkUtils
             //////////////////////////////////////////////////
             
             TeleportableSurfaceGUI();
+            NonCollidableGUI();
             
             //////////////////////////////////////////////////
 
@@ -124,20 +125,45 @@ namespace DimX.SparkUtils
 
         private void TeleportableSurfaceGUI()
         {
+            ChildrenGUI(
+                _mapConfig,
+                _go.transform,
+                _mapConfig.teleportSurfaces,
+                "VR Teleport Surfaces",
+                "Leave this list empty to make all surfaces in the map teleportable.");
+        }
+        
+        private void NonCollidableGUI()
+        {
+            ChildrenGUI(
+                _mapConfig, 
+                _go.transform, 
+                _mapConfig.nonCollidable, 
+                "Non Collidable Objects",
+                "These are visible objects, such as grass, which should not get colliders in Bonfire.");
+        }
+        
+        private static void ChildrenGUI(
+            Object undoRoot, 
+            Transform root,
+            List<string> childrenPaths, 
+            string title,
+            string subtext)
+        {
             GUILayout.Space(15);
-            Undo.RecordObject(_mapConfig, "Map Config Edits");
-            EditorGUILayout.LabelField("VR Teleport Surfaces");
-            EditorGUILayout.LabelField(" - Leave this list empty to make all surfaces in the map teleportable.");
-            for (int i = 0; i < _mapConfig.teleportSurfaces.Count; i++)
+            Undo.RecordObject(undoRoot, "Map Config Edits");
+            EditorGUILayout.LabelField(title);
+            EditorGUILayout.LabelField($" - {subtext}");
+            for (int i = 0; i < childrenPaths.Count; i++)
             {
-                string childPath = _mapConfig.teleportSurfaces[i];
-                Transform item = string.IsNullOrEmpty(childPath) ? null : _go.transform.Find(childPath);
+                string childPath = childrenPaths[i];
+                Transform item = string.IsNullOrEmpty(childPath) ? null : root.Find(childPath);
                 item = EditorGUILayout.ObjectField(
                     new GUIContent($"{i}"),
                     item,
                     typeof(Transform),
                     allowSceneObjects: true) as Transform;
-                _mapConfig.teleportSurfaces[i] = BuildUtilities.GetChildPath(item);
+                childrenPaths[i] = BuildUtilities.GetChildPath(item);
             }
             Transform newItem = EditorGUILayout.ObjectField(
                 new GUIContent("Add"),
@@ -146,9 +172,9 @@ namespace DimX.SparkUtils
                 allowSceneObjects: true) as Transform;
             if (newItem)
             {
-                _mapConfig.teleportSurfaces.Add(BuildUtilities.GetChildPath(newItem));
+                childrenPaths.Add(BuildUtilities.GetChildPath(newItem));
             }
-            _mapConfig.teleportSurfaces.RemoveAll(string.IsNullOrEmpty);
+            childrenPaths.RemoveAll(string.IsNullOrEmpty);
         }
 
         private void Build()
@@ -157,8 +183,9 @@ namespace DimX.SparkUtils
             var path = GetPath(_metadata);
             Directory.CreateDirectory(path);
             
-            // Save Teleportable surfaces
+            // Save surfaces
             _metadata.KeyVals.Add(nameof(MapConfigData.teleportSurfaces), JsonConvert.SerializeObject(_mapConfig.teleportSurfaces));
+            _metadata.KeyVals.Add(nameof(MapConfigData.nonCollidable), JsonConvert.SerializeObject(_mapConfig.nonCollidable));
             
             // Generate Metadata
             BuildUtilities.BuildMetadata(_metadata, path);
